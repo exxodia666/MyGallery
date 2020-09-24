@@ -8,18 +8,18 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Post from '../components/Post';
 import RootModel from '../models/RootModel';
 import {status} from '../utills/constants';
-const url = 'https://reactnative.dev/img/tiny_logo.png';
-const descr = 'Kekwait picture here';
-const id = 3124124;
 
 const Home = (props) => {
   const pictures = RootModel.picturesStore.pictures;
   const state = RootModel.picturesStore.state;
-  console.log(pictures[5].user.name);
-  console.log(pictures[5].urls.full);
+
   useEffect(() => {
     RootModel.picturesStore.savePictures();
-  }, [state]);
+  }, []);
+
+  const handleNavigation = (pic) => {
+    props.navigation.navigate('Picture', {pic: pic});
+  };
 
   if (state === status.pending) {
     <Text>Loading!!!</Text>;
@@ -32,8 +32,9 @@ const Home = (props) => {
               <Post
                 url={pic.urls.full}
                 descr={pic.description || pic.alt_description}
-                id={pic.id}
+                key={pic.id}
                 author={pic.user.name}
+                handleNavigation={() => handleNavigation(pic)}
               />
             );
           })}

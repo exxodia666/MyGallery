@@ -1,14 +1,15 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const Post = ({url, descr, id, author}) => {
+const Post = ({url, descr, handleNavigation, author}) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={handleNavigation}>
       <Image source={{uri: url}} style={{width: '100%', height: 200}} />
       <Text>{descr}</Text>
       <Text>Created by {author}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 const styles = StyleSheet.create({
