@@ -1,8 +1,8 @@
 import Axios from 'axios';
-
 //import { persist } from 'mobx-persist';
 const {decorate, observable, action, computed} = require('mobx');
 import {url, status} from '../utills/constants';
+
 const fetchPictures = () => {
   return Axios.get(url);
 };
@@ -14,8 +14,11 @@ class PicListModel {
   savePictures = () => {
     fetchPictures().then(
       (res) => {
+        //console.log(res);
         this.pictures = res.data.map((pic) => pic);
         this.state = status.done;
+        console.log('this.state');
+        console.log(this.state);
       },
       (error) => (this.state = status.error),
     );

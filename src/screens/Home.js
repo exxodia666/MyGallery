@@ -1,9 +1,15 @@
 import {observer} from 'mobx-react';
 //import {observer} from 'mobx';
 //import {inject} from 'react-mobx';
-import React, {useEffect} from 'react';
-import {Alert, StyleSheet, Text, View} from 'react-native';
-import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
+import React, {useEffect, useState} from 'react';
+import {
+  Alert,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Post from '../components/Post';
 import RootModel from '../models/RootModel';
@@ -11,22 +17,24 @@ import {status} from '../utills/constants';
 
 const Home = (props) => {
   const pictures = RootModel.picturesStore.pictures;
-  const state = RootModel.picturesStore.state;
-
-  useEffect(() => {
-    RootModel.picturesStore.savePictures();
-  }, []);
+  //const state = RootModel.picturesStore.state;
+  const [state, setState] = useState(false);
 
   const handleNavigation = (pic) => {
     props.navigation.navigate('Picture', {pic: pic});
   };
 
-  if (state === status.pending) {
+  useEffect(() => {
+    RootModel.picturesStore.savePictures();
+    setState(true);
+  }, []);
+
+  if (state === false) {
     <Text>Loading!!!</Text>;
-  } else if (state === status.done) {
+  } else if (state === true) {
     return (
       <View style={styles.container}>
-        <ScrollView>
+        <ScrollView style={{width: '100%'}}>
           {pictures.map((pic) => {
             return (
               <Post
@@ -41,8 +49,6 @@ const Home = (props) => {
         </ScrollView>
       </View>
     );
-  } else if (state === status.error) {
-    <Text>error</Text>;
   }
 };
 const styles = StyleSheet.create({

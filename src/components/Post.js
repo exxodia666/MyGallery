@@ -1,20 +1,36 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  TouchableWithoutFeedback,
+} from 'react-native';
 
 const Post = ({url, descr, handleNavigation, author}) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={handleNavigation}>
-      <Image source={{uri: url}} style={{width: '100%', height: 200}} />
-      <Text>{descr}</Text>
-      <Text>Created by {author}</Text>
-    </TouchableOpacity>
+    <TouchableWithoutFeedback
+      style={styles.container}
+      onPress={handleNavigation}>
+      <Image source={{uri: url}} style={{width: '100%', height: 300}} />
+      <View style={styles.textDiv}>
+        <Text>{descr}</Text>
+        <Text style={styles.author}>Created by {author}</Text>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 const styles = StyleSheet.create({
+  textDiv: {
+    padding: 10,
+  },
+  author: {
+    fontWeight: 'bold',
+    fontStyle: 'italic',
+  },
   container: {
-    marginBottom: 20,
+    paddingBottom: 5,
+    //marginBottom: 20,
     elevation: 4,
     flex: 1,
     justifyContent: 'center',
