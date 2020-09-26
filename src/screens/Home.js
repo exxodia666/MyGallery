@@ -1,49 +1,38 @@
 import {observer} from 'mobx-react';
-//import {observer} from 'mobx';
-//import {inject} from 'react-mobx';
 import React, {useEffect, useState} from 'react';
-import {
-  Alert,
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {StyleSheet, View, ScrollView} from 'react-native';
 import Post from '../components/Post';
 import RootModel from '../models/RootModel';
-import {status} from '../utills/constants';
+import Error from '../components/Error';
+import Loading from '../components/Loading';
 
 const Home = (props) => {
   const pictures = RootModel.picturesStore.pictures;
-  //const state = RootModel.picturesStore.state;
   const [state, setState] = useState(false);
-  const [error, setError] = useState(false);
 
   const handleNavigation = (pic) => {
     props.navigation.navigate('Picture', {pic: pic});
   };
 
+  const refreshPictures = () => {
+    setState(false);
+    RootModel.picturesStore.savePictures();
+    setState(true);
+  };
+
   useEffect(() => {
-    try {
-      RootModel.picturesStore.savePictures();
-      console.log('ERROR SUKA');
-      setState(true);
-    } catch (e) {
-      console.log('ERRRROOOOOOOOOOOOOOOOR');
-      setError(e);
-    }
+    RootModel.picturesStore.savePictures();
+    setState(true);
   }, []);
 
-  if (error === true) {
-    <View style={{justifyContent: 'center', alignItems: 'center'}}>
-      <Text>ERROR</Text>;
-    </View>;
-  } else if (error === false) {
-    if (state === false) {
-      <Text>Loading!!!</Text>;
-    } else if (state === true) {
+  if (!state) {
+    //LOADING!!
+    return <Loading />;
+  } else if (state) {
+    const error = RootModel.picturesStore.error;
+    if (error.state) {
+      return <Error refresh={refreshPictures} error={error.message} />;
+    } else if (!error.state) {
       return (
         <View style={styles.container}>
           <ScrollView style={{width: '100%'}}>

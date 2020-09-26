@@ -11,22 +11,27 @@ class PicListModel {
   state = status.pending;
   pictures = [];
 
+  error = {
+    message: '',
+    state: false,
+  };
+
   savePictures = () => {
-    fetchPictures()
-      .then(
-        (res) => {
-          //console.log(res);
-          this.pictures = res.data.map((pic) => pic);
-        },
-        (e) => {
-          throw new Error(e);
-        },
-      )
-      .catch((e) => e);
+    fetchPictures().then(
+      (res) => {
+        console.log(res);
+        this.pictures = res.data.map((pic) => pic);
+      },
+      (e) => {
+        this.error.state = true;
+        this.error.message = e.toString();
+      },
+    );
   };
 }
 
 export default decorate(PicListModel, {
   pictures: [/*persist('list'),*/ observable],
+  error: [/*persist('list'),*/ observable],
   savePictures: action,
 });
