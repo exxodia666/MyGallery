@@ -12,16 +12,17 @@ class PicListModel {
   pictures = [];
 
   savePictures = () => {
-    fetchPictures().then(
-      (res) => {
-        //console.log(res);
-        this.pictures = res.data.map((pic) => pic);
-        this.state = status.done;
-        console.log('this.state');
-        console.log(this.state);
-      },
-      (error) => (this.state = status.error),
-    );
+    fetchPictures()
+      .then(
+        (res) => {
+          //console.log(res);
+          this.pictures = res.data.map((pic) => pic);
+        },
+        (e) => {
+          throw new Error(e);
+        },
+      )
+      .catch((e) => e);
   };
 }
 

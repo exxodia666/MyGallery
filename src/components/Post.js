@@ -1,11 +1,6 @@
 import React from 'react';
-import {
-  Image,
-  StyleSheet,
-  Text,
-  View,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
+import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
 const Post = ({url, descr, handleNavigation, author}) => {
   return (

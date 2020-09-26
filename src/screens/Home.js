@@ -19,36 +19,49 @@ const Home = (props) => {
   const pictures = RootModel.picturesStore.pictures;
   //const state = RootModel.picturesStore.state;
   const [state, setState] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleNavigation = (pic) => {
     props.navigation.navigate('Picture', {pic: pic});
   };
 
   useEffect(() => {
-    RootModel.picturesStore.savePictures();
-    setState(true);
+    try {
+      RootModel.picturesStore.savePictures();
+      console.log('ERROR SUKA');
+      setState(true);
+    } catch (e) {
+      console.log('ERRRROOOOOOOOOOOOOOOOR');
+      setError(e);
+    }
   }, []);
 
-  if (state === false) {
-    <Text>Loading!!!</Text>;
-  } else if (state === true) {
-    return (
-      <View style={styles.container}>
-        <ScrollView style={{width: '100%'}}>
-          {pictures.map((pic) => {
-            return (
-              <Post
-                url={pic.urls.full}
-                descr={pic.description || pic.alt_description}
-                key={pic.id}
-                author={pic.user.name}
-                handleNavigation={() => handleNavigation(pic)}
-              />
-            );
-          })}
-        </ScrollView>
-      </View>
-    );
+  if (error === true) {
+    <View style={{justifyContent: 'center', alignItems: 'center'}}>
+      <Text>ERROR</Text>;
+    </View>;
+  } else if (error === false) {
+    if (state === false) {
+      <Text>Loading!!!</Text>;
+    } else if (state === true) {
+      return (
+        <View style={styles.container}>
+          <ScrollView style={{width: '100%'}}>
+            {pictures.map((pic) => {
+              return (
+                <Post
+                  url={pic.urls.full}
+                  descr={pic.description || pic.alt_description}
+                  key={pic.id}
+                  author={pic.user.name}
+                  handleNavigation={() => handleNavigation(pic)}
+                />
+              );
+            })}
+          </ScrollView>
+        </View>
+      );
+    }
   }
 };
 const styles = StyleSheet.create({
