@@ -16,14 +16,12 @@ const Home = (props) => {
 
   const refreshPictures = () => {
     setState(false);
-    RootModel.picturesStore.savePictures();
-    setState(true);
   };
 
   useEffect(() => {
     RootModel.picturesStore.savePictures();
     setState(true);
-  }, []);
+  }, [state]);
 
   if (!state) {
     //LOADING!!

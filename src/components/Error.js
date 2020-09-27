@@ -3,7 +3,6 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Error = ({refresh, error}) => {
-  console.log(refresh);
   return (
     <View style={{flex: 1, justifyContent: 'center', alignSelf: 'center'}}>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
